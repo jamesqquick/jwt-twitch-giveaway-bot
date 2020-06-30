@@ -1,0 +1,16 @@
+{
+  "name": "jwt-generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "tmi.js": "^1.5.0"
+  }
+}
