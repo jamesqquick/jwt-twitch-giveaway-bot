@@ -19,6 +19,7 @@ const generateTokens = (numberOfWinners, entries) => {
             console.error(err);
         }
     });
+    return tokens;
 };
 
 const getWinningNumbers = (numberOfWinners, entries) => {
