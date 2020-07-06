@@ -1,6 +1,6 @@
 require('dotenv').config();
 const tmi = require('tmi.js');
-const { generateTokens } = require('./tokenGenerator');
+const { generateTokens, verifyToken } = require('./tokenGenerator');
 const NUM_WINNERS = 1;
 const client = new tmi.Client({
     options: { debug: true },
@@ -22,21 +22,20 @@ client.on('message', (channel, tags, message, self) => {
     if (self) return;
 
     const isAdmin = tags.username === process.env.TWITCH_USERNAME;
-
+    //General Commands
     if (acceptingEntries && message === '!enter' && !isAdmin) {
         addEntry(channel, tags.username);
+    } else if (!acceptingEntries && message.startsWith('!winner') && !isAdmin) {
+        checkForWinner(tags.username, message);
+    }
+    //admin commands from here on
+    else if (!isAdmin && message.startsWith('!')) {
+        //client.say(channel, `@${tags.username}, you can't do that!!`);
+        //ignore it
     } else if (message === '!startGiveaway') {
-        if (!isAdmin) {
-            client.say(channel, `@${tags.username}, you can't do that!!`);
-        } else {
-            startAcceptingEntries();
-        }
+        startAcceptingEntries();
     } else if (message === '!stopGiveaway') {
-        if (!isAdmin) {
-            client.say(channel, `@${tags.username}, you can't do that!!`);
-        } else {
-            stopAcceptingEntries(channel);
-        }
+        stopAcceptingEntries(channel);
     }
     //TODO: create winner command to verify the token from a user
 });
@@ -47,12 +46,24 @@ const startAcceptingEntries = () => {
     acceptingEntries = true;
 };
 
+const checkForWinner = (username, message) => {
+    const token = message.split(' ')[1];
+    const decoded = verifyToken(token);
+    if (!decoded) {
+        return client.say(
+            process.env.TWITCH_USERNAME,
+            `${username}, you can't fool me. That token isn't valid`
+        );
+    } else {
+        console.log(`${username} IS A WINNER!!!`);
+    }
+};
+
 const stopAcceptingEntries = (channel) => {
     acceptingEntries = false;
     console.log(entries);
     const entriesArray = [...entries];
     const tokens = generateTokens(NUM_WINNERS, entriesArray);
-    console.log(tokens);
     entriesArray.forEach((entry, i) => {
         try {
             client.say(channel, `@${entry} - ${tokens[i]}`);

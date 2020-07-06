@@ -22,6 +22,15 @@ const generateTokens = (numberOfWinners, entries) => {
     return tokens;
 };
 
+const verifyToken = (token) => {
+    try {
+        const decoded = jwt.verify(token, process.env.SIGNING_KEY);
+        return decoded;
+    } catch (err) {
+        return null;
+    }
+};
+
 const getWinningNumbers = (numberOfWinners, entries) => {
     const winningNumbers = [];
     for (let i = 0; i < numberOfWinners; i++) {
@@ -35,7 +44,7 @@ const getWinningNumbers = (numberOfWinners, entries) => {
     return winningNumbers;
 };
 
-module.exports = { generateTokens };
+module.exports = { generateTokens, verifyToken };
 //select random winners
 
 //TODO: verify token
