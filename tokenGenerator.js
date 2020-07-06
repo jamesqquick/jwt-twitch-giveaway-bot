@@ -39,7 +39,4 @@ module.exports = { generateTokens };
 //select random winners
 
 //TODO: verify token
-//TODO: create x number of tokens based on input
-//TODO: send code to twitch attendees...email?
 //TODO: user to submit winning token
-//TODO: user enters the drawing by sending a command in Twitch - their username will be unique

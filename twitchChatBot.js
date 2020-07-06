@@ -12,7 +12,7 @@ const client = new tmi.Client({
         username: process.env.TWITCH_USERNAME,
         password: process.env.TWITCH_PASSWORD,
     },
-    channels: ['jamesqquick'],
+    channels: [process.env.TWITCH_USERNAME],
 });
 let entries = new Set();
 let acceptingEntries = true;
