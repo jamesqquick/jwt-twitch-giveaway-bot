@@ -1,7 +1,7 @@
 require('dotenv').config();
 const tmi = require('tmi.js');
 const { generateTokens, verifyToken } = require('./tokenGenerator');
-const NUM_WINNERS = 1;
+const NUM_WINNERS = 2;
 const client = new tmi.Client({
     options: { debug: true },
     connection: {
@@ -15,7 +15,7 @@ const client = new tmi.Client({
     channels: [process.env.TWITCH_USERNAME],
 });
 let entries = new Set();
-let acceptingEntries = true;
+let acceptingEntries = false;
 
 client.connect();
 client.on('message', (channel, tags, message, self) => {
@@ -37,7 +37,6 @@ client.on('message', (channel, tags, message, self) => {
     } else if (message === '!stopGiveaway') {
         stopAcceptingEntries(channel);
     }
-    //TODO: create winner command to verify the token from a user
 });
 
 const startAcceptingEntries = () => {
@@ -54,8 +53,19 @@ const checkForWinner = (username, message) => {
             process.env.TWITCH_USERNAME,
             `${username}, you can't fool me. That token isn't valid`
         );
+    } else if (decoded.username !== username) {
+        return client.say(
+            process.env.TWITCH_USERNAME,
+            `${username}, you must have stolen someone else's token`
+        );
+    } else if (!decoded.winner) {
+        return client.say(
+            process.env.TWITCH_USERNAME,
+            `${username},that's not a winner`
+        );
     } else {
         console.log(`${username} IS A WINNER!!!`);
+        client.say(process.env.TWITCH_USERNAME, `${username} IS A WINNER!!`);
     }
 };
 
