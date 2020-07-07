@@ -1,7 +1,6 @@
 require('dotenv').config();
 const tmi = require('tmi.js');
 const { generateTokens, verifyToken } = require('./tokenGenerator');
-const NUM_WINNERS = 2;
 const client = new tmi.Client({
     options: { debug: true },
     connection: {
@@ -73,7 +72,7 @@ const stopAcceptingEntries = (channel) => {
     acceptingEntries = false;
     console.log(entries);
     const entriesArray = [...entries];
-    const tokens = generateTokens(NUM_WINNERS, entriesArray);
+    const tokens = generateTokens(process.env.NUM_WINNERS, entriesArray);
     entriesArray.forEach((entry, i) => {
         try {
             client.say(channel, `@${entry} - ${tokens[i]}`);
