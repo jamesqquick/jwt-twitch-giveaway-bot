@@ -6,7 +6,7 @@ This Twitch Bot is used to facilitate a giveaway by generating JSON Web Tokens f
 
 The admin controls the timeframe to accept entries with the `!startGiveaway` and `!stopGiveaway` commands. Users can then enter the giveaway with the `!enter` command.
 
-After the admin decides to stop accepting entries, a JSON Web Token (JWT) is generated for each user that entered. A message will be posted in the chat tagging the user that includes their respective token. Ideally, this should be done using Whispers (private messages), but there are limitations in automating those. If you have a suggestion on how this would work, please let me know :)
+After the admin decides to stop accepting entries, a JSON Web Token (JWT) is generated for each user that entered. A message will be posted in the chat tagging the user and including their respective token. Ideally, this should be done using Whispers (private messages), but there are limitations in automating those. If you have a suggestion on how this would work, please let me know :)
 
 ![Token message in Twitch](./images/giveaway-token.png)
 
