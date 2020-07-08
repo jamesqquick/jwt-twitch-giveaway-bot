@@ -1,6 +1,6 @@
 # JWT Twitch Giveaway Bot
 
-This Twitch Bot is used to facilitate a giveaway.
+This Twitch Bot is used to facilitate a giveaway by generating JSON Web Tokens for each entered user.
 
 ## How it Works
 
