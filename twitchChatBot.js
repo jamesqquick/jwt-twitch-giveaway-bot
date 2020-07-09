@@ -1,6 +1,7 @@
 require('dotenv').config();
 const tmi = require('tmi.js');
 const { generateTokens, verifyToken } = require('./tokenGenerator');
+const { TokenExpiredError } = require('jsonwebtoken');
 const client = new tmi.Client({
     options: { debug: true },
     connection: {
@@ -14,7 +15,7 @@ const client = new tmi.Client({
     channels: [process.env.TWITCH_USERNAME],
 });
 let entries = new Set();
-let acceptingEntries = false;
+let acceptingEntries = true;
 
 client.connect();
 client.on('message', (channel, tags, message, self) => {
@@ -46,18 +47,26 @@ const startAcceptingEntries = () => {
 
 const checkForWinner = (username, message) => {
     const token = message.split(' ')[1];
-    const decoded = verifyToken(token);
-    if (!decoded) {
-        return client.say(
-            process.env.TWITCH_USERNAME,
-            `${username}, you can't fool me. That token isn't valid`
-        );
-    } else if (decoded.username !== username) {
+    const { error, decoded } = verifyToken(token);
+    if (error) {
+        if (error instanceof TokenExpiredError) {
+            return client.say(
+                process.env.TWITCH_USERNAME,
+                `${username}, you can't fool me. THAT TOKEN IS EXPIRED!!`
+            );
+        } else {
+            return client.say(
+                process.env.TWITCH_USERNAME,
+                `${username}, you can't fool me. THAT TOKEN ISN'T VALID`
+            );
+        }
+    } else if (decoded.data.username !== username) {
+        console.log('**************', decoded, username);
         return client.say(
             process.env.TWITCH_USERNAME,
             `${username}, you must have stolen someone else's token`
         );
-    } else if (!decoded.winner) {
+    } else if (!decoded.data.winner) {
         return client.say(
             process.env.TWITCH_USERNAME,
             `${username},that's not a winner`

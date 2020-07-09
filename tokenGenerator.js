@@ -10,7 +10,10 @@ const generateTokens = (numberOfWinners, entries) => {
             winner: winningNumbers.includes(i) ? true : false,
             username: entries[i],
         };
-        var token = jwt.sign(data, process.env.SIGNING_KEY);
+        var token = jwt.sign(
+            { data, exp: Math.floor(Date.now() / 1000) + 1 * 60 },
+            process.env.SIGNING_KEY
+        );
         tokens.push(token);
     }
 
@@ -25,9 +28,10 @@ const generateTokens = (numberOfWinners, entries) => {
 const verifyToken = (token) => {
     try {
         const decoded = jwt.verify(token, process.env.SIGNING_KEY);
-        return decoded;
-    } catch (err) {
-        return null;
+        return { error: null, decoded };
+    } catch (error) {
+        console.log(error);
+        return { error, decoded: null };
     }
 };
 
