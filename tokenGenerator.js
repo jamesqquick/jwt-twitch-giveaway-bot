@@ -11,7 +11,12 @@ const generateTokens = (numberOfWinners, entries) => {
             username: entries[i],
         };
         var token = jwt.sign(
-            { data, exp: Math.floor(Date.now() / 1000) + 1 * 60 },
+            {
+                data,
+                exp:
+                    Math.floor(Date.now() / 1000) +
+                    process.env.EXPIRATION_IN_MINUTES * 60,
+            },
             process.env.SIGNING_KEY
         );
         tokens.push(token);

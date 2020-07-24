@@ -2,6 +2,17 @@ require('dotenv').config();
 const tmi = require('tmi.js');
 const { generateTokens, verifyToken } = require('./tokenGenerator');
 const { TokenExpiredError } = require('jsonwebtoken');
+
+if (
+    !process.env.SIGNING_KEY ||
+    !process.env.TWITCH_USERNAME ||
+    !process.env.TWITCH_PASSWORD ||
+    !process.env.NUM_WINNERS ||
+    !process.env.EXPIRATION_IN_MINUTES
+) {
+    console.error('Make sure to fill in your environment variables');
+    process.exit(1);
+}
 const client = new tmi.Client({
     options: { debug: true },
     connection: {
