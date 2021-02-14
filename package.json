@@ -1,16 +1,22 @@
 {
-  "name": "jwt-generator",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "dotenv": "^8.2.0",
-    "jsonwebtoken": "^8.5.1",
-    "tmi.js": "^1.5.0"
-  }
+    "name": "jwt-generator",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "jest",
+        "start": "node ./src/TwitchChatBot",
+        "dev": "nodemon ./src/TwitchChatBot"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "dotenv": "^8.2.0",
+        "jsonwebtoken": "^8.5.1",
+        "quick-chat-bot": "^0.8.0",
+        "tmi.js": "^1.5.0"
+    },
+    "devDependencies": {
+        "jest": "^26.6.3"
+    }
 }

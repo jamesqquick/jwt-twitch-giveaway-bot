@@ -50,11 +50,8 @@ const getWinningNumbers = (numberOfWinners, entries) => {
 
         winningNumbers.push(randomNum);
     }
+    console.log(winningNumbers);
     return winningNumbers;
 };
 
 module.exports = { generateTokens, verifyToken };
-//select random winners
-
-//TODO: verify token
-//TODO: user to submit winning token
