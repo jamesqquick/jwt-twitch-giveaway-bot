@@ -4,13 +4,14 @@ const giveaway = getGiveaway();
 module.exports = {
     callback: (channel, tags, message, self, client) => {
         if (!tags.badges || !tags.badges.broadcaster) {
+            client.say(channel, 'Only the streamer can run this command.');
             return console.log('Only the streamer can run this command');
         }
-        giveaway.startAcceptingEntries();
+        giveaway.start();
         client.say(
             channel,
             'The giveaway has started. Please use the !enter command to enter.'
         );
-        console.log('Give away is turned on');
+        console.log('Giveaway is turned on');
     },
 };

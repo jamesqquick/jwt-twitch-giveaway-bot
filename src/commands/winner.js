@@ -4,7 +4,8 @@ const giveaway = getGiveaway();
 module.exports = {
     callback: (channel, tags, message, self, client) => {
         const username = tags.username;
-        const msg = giveaway.checkForWinner(username, message);
-        client.say(channel, msg);
+        const token = message.split(' ')[1];
+        const { err, data } = giveaway.checkForWinner(username, token);
+        client.say(channel, err || data.msg);
     },
 };
